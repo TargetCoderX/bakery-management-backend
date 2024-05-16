@@ -14,16 +14,18 @@ const login = (req, res) => {
         else {
             bcrypt.compare(password.toString(), result[0].password, function (err, verify) {
                 if (verify) {
-                    let token = jwt.sign({
+                    let user = {
                         'id': result[0].id,
                         'name': result[0].name,
                         'email': result[0].email,
-                    }, process.env.JWT_SECRET);
+                    };
+                    let token = jwt.sign(user, process.env.JWT_SECRET);
                     res.json({
                         'status': 1,
                         'token': token,
+                        'user': user,
                     })
-                }else{
+                } else {
                     res.json({
                         "status": 0,
                         "message": "No Record Found with this Email and Password",
