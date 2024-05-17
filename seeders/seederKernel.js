@@ -1,4 +1,4 @@
-const { seedCustomer } = require("./customerSeeder");
+const { seedCustomer, seedOrders, seedProducts } = require("./customerSeeder");
 
 
 
@@ -7,7 +7,8 @@ const executeSeeders = async () => {
         try {
             /* seeders */
             seedCustomer();
-
+            seedProducts()
+            seedOrders()
             resolve();
         } catch (error) {
             reject(error);
@@ -16,6 +17,7 @@ const executeSeeders = async () => {
 }
 executeSeeders().then(() => {
     console.log("Seeded Successfully.. Press CTRL+C to close...");
+    return 1;
 
 }).catch((error) => {
     console.log(error);
