@@ -14,6 +14,24 @@ const getCustomers = (req, res) => {
     })
 }
 
+const deleteCustomer = (req, res) => {
+    const custmerId = req.params.customer_id;
+    connection.query(`delete from customers where id=${custmerId}`, (err, result, fields) => {
+        if (!err) {
+            res.json({
+                "status": 1,
+                "message": "Customer Deleted Successfully",
+            })
+        } else {
+            res.json({
+                "status": 0,
+                "message": "Something went wrong",
+            })
+        }
+    })
+}
+
 module.exports = {
     getCustomers,
+    deleteCustomer,
 }

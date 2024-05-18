@@ -1,7 +1,7 @@
 const express = require('express');
 const { login } = require('../controllers/authController');
 const { getBecryptData } = require('../controllers/testController');
-const { getCustomers } = require('../controllers/customerController');
+const { getCustomers, deleteCustomer } = require('../controllers/customerController');
 const { verifyToken } = require('../middlewares/authVerifyMiddleware');
 
 const router1 = express.Router();
@@ -17,6 +17,7 @@ router1.post('/login', login)
 
 /* protected route */
 router2.get('/get-customers', getCustomers);
+router2.get('/delete-customer/:customer_id', deleteCustomer);
 
 module.exports = {
     router1,
