@@ -41,22 +41,19 @@ const seedOrders = () => {
     connection.query("select * from products", (err, result, fields) => { products = result })
     connection.query("select id from customers", (err, result, fields) => {
         result.forEach(element => {
-            let generateCount = Math.floor(Math.random() * 20) + 1;
+            let generateCount = Math.floor(Math.random() * 50) + 1;
             for (let index = 0; index < generateCount; index++) {
                 let customerId = element.id;
                 let getProduct = products[Math.floor(Math.random() * products.length)];
-                let date = new Intl.DateTimeFormat('en-US', {
-                    timeZone: 'Asia/Kolkata',
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit'
-                }).format(new Date);
                 let time = Intl.DateTimeFormat('en-US', {
                     hour: '2-digit',
                     'minute': '2-digit',
                     hour12: true,
                 }).format(new Date());
-                connection.query(`insert into orders(product_name,product_id,customer_id,price,date,time) values('${getProduct.name}','${getProduct.id}',${customerId},${getProduct.price},'${date}','${time}')`)
+                let fakeDate = faker.date.between({ from: '2020-01-01', to: '2024-12-31' });
+                let date = fakeDate.getDate().toString().padStart(2, 0) + '-' + (fakeDate.getMonth()+1).toString().padStart(2, 0) + '-' + fakeDate.getFullYear();
+                let year = fakeDate.getFullYear();
+                connection.query(`insert into orders(product_name,product_id,customer_id,price,date,year,time) values('${getProduct.name}','${getProduct.id}',${customerId},${getProduct.price},'${date}','${year}','${time}')`)
             }
         });
     })
