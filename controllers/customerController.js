@@ -31,7 +31,28 @@ const deleteCustomer = (req, res) => {
     })
 }
 
+const searchCustomer = (req, res) => {
+    let searchKey = req.query.search_key
+    connection.query(`select * from customers where name like '%${searchKey}%' or email like '%${searchKey}%' or phone like '%${searchKey}%' or address like '${searchKey}'`, (err, result, fields) => {
+        if (!err && result) {
+            res.json({
+                "status": 1,
+                "message": "",
+                "data": result,
+                "total_count": result.length,
+            })
+        } else {
+            res.json({
+                "status": 0,
+                "message": "Something went wrong",
+                "error": err,
+            });
+        }
+    })
+}
+
 module.exports = {
     getCustomers,
     deleteCustomer,
+    searchCustomer,
 }
