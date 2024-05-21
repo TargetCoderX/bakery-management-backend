@@ -21,8 +21,27 @@ const getOrderOdCustomer = (req, res) => {
             })
         }
     })
+
+}
+const getOrders = (req, res) => {
+    connection.query("select * from orders join customers on orders.customer_id = customers.id", (err, result, fields) => {
+        if (!err) {
+            res.json({
+                "status": 1,
+                "message": "",
+                "data": result,
+            })
+        } else {
+            res.json({
+                "status": 0,
+                "message": "Somthing went wrong",
+                "error": err,
+            })
+        }
+    })
 }
 
 module.exports = {
+    getOrders,
     getOrderOdCustomer,
 }
