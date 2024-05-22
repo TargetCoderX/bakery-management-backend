@@ -24,7 +24,7 @@ const getOrderOdCustomer = (req, res) => {
 
 }
 const getOrders = (req, res) => {
-    connection.query("select * from orders join customers on orders.customer_id = customers.id", (err, result, fields) => {
+    connection.query("select * from orders join customers on orders.customer_id = customers.id order by orders.year desc", (err, result, fields) => {
         if (!err) {
             res.json({
                 "status": 1,
