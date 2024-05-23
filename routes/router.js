@@ -4,6 +4,7 @@ const { getBecryptData } = require('../controllers/testController');
 const { getCustomers, deleteCustomer, searchCustomer, addNewCustomer } = require('../controllers/customerController');
 const { verifyToken } = require('../middlewares/authVerifyMiddleware');
 const { getOrderOdCustomer, getOrders } = require('../controllers/orderController');
+const { getAllProducts } = require('../controllers/productsController');
 
 const router1 = express.Router();
 const router2 = express.Router();
@@ -23,6 +24,7 @@ router2.get('/search-customer', searchCustomer);
 router2.get('/get-customer-order-data/:customer_id/:year', getOrderOdCustomer);
 router2.get('/get-all-orders', getOrders);
 router2.post('/add-customer', addNewCustomer);
+router2.get('/get-all-products', getAllProducts);
 
 module.exports = {
     router1,
