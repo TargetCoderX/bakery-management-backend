@@ -6,9 +6,11 @@ const executeSeeders = async () => {
     return new Promise((resolve, reject) => {
         try {
             /* seeders */
-            seedCustomer();
-            seedProducts()
-            seedOrders()
+            seedCustomer().then(async () => {
+                await seedProducts().then(async () => {
+                    await seedOrders()
+                })
+            });
             resolve();
         } catch (error) {
             reject(error);

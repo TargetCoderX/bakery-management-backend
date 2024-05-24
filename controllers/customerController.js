@@ -72,9 +72,61 @@ const addNewCustomer = (req, res) => {
         }
     })
 }
+
+const getCustomerByPhone = (req, res) => {
+    const phone = req.params.phone;
+    connection.query(`select * from customers where phone='${phone}'`, (err, result, fields) => {
+        if (!err) {
+            res.json({
+                'status': 1,
+                'message': '',
+                'data': result[0],
+            })
+        } else {
+            res.json({
+                'status': 0,
+                'message': 'No user found related to this phone number',
+            })
+        }
+    })
+}
+
+const savebillandCreateCustomer = (req, res) => {
+    let data = req.body;
+    let time = Intl.DateTimeFormat('en-US', {
+        hour: '2-digit',
+        'minute': '2-digit',
+        hour12: true,
+    }).format(new Date());
+    let currentDate = new Date();
+    let date = currentDate.getDate().toString().padStart(2, 0) + '-' + (currentDate.getMonth() + 1).toString().padStart(2, 0) + '-' + currentDate.getFullYear();
+    let year = currentDate.getFullYear();
+    if (!data.is_customer) {
+        let customerData = data.customer_data;
+        connection.query(`insert into customers(name,phone,address,email) value('${customerData.name}','${customerData.phone}','${customerData.address}','${customerData.email}')`, async (err, result) => {
+            const { insertId } = await result;
+            data.bill.forEach(element => {
+                let sql = `insert into orders(product_name,product_id,quantity,customer_id,price,date,time,year) values('${element.product}','${element.product_id}',${element.quantity},${insertId},${element.sub_total},'${date}','${time}',${year})`
+                connection.query(sql)
+            });
+        })
+    } else {
+        let customerData = data.customer_data;
+        data.bill.forEach(element => {
+            let sql = `insert into orders(product_name,product_id,quantity,customer_id,price,date,time,year) values('${element.product}','${element.product_id}',${element.quantity},${customerData.id},${element.sub_total},'${date}','${time}',${year})`
+            connection.query(sql)
+        });
+    }
+    res.json({
+        'status': 1,
+        'message': 'Bill/Order created successfully',
+    })
+}
 module.exports = {
     getCustomers,
     deleteCustomer,
     searchCustomer,
     addNewCustomer,
+    getCustomerByPhone,
+    savebillandCreateCustomer,
 }
