@@ -1,5 +1,9 @@
 const { faker } = require('@faker-js/faker');
 const { connection } = require("../database/mysql");
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+const myPlaintextPassword = "12345678";
+
 const bakeryProducts = [
     'Bread',
     'Baguette',
@@ -69,8 +73,20 @@ const seedOrders = () => {
     })
 }
 
+const createUserAccount = () => {
+    return new Promise((resolve, reject) => {
+        bcrypt.genSalt(saltRounds, function (err, salt) {
+            bcrypt.hash(myPlaintextPassword, salt, function (err, hash) {
+                connection.query(`insert into users(name,email,password) values('Example User','example@email.com','${hash}')`)
+                resolve()
+            });
+        });
+    })
+}
+
 module.exports = {
     seedCustomer,
     seedProducts,
     seedOrders,
+    createUserAccount,
 }

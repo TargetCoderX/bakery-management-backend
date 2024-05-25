@@ -36,6 +36,14 @@ Clone the GIT repository
 ```
 Create a table in mysql. Adjust the MYSQL configuration and JWT secret in ``.env`` file
 
+```
+Create tables in mysql 
+- users
+- customers
+- orders
+- products
+```
+
 
 Run Seeders
 ```bash
@@ -51,6 +59,12 @@ Now, Run the project by using
 ```
 
 **By default it will run on 5000 port, You can adjust port in ``.env`` as well**
+
+**Default username and password for login from frontend is**
+```
+username: example@email.com
+password: 12345678
+```
 
     
 ## Author

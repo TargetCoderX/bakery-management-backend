@@ -1,4 +1,4 @@
-const { seedCustomer, seedOrders, seedProducts } = require("./customerSeeder");
+const { seedCustomer, seedOrders, seedProducts, createUserAccount } = require("./customerSeeder");
 
 
 
@@ -8,7 +8,9 @@ const executeSeeders = async () => {
             /* seeders */
             seedCustomer().then(async () => {
                 await seedProducts().then(async () => {
-                    await seedOrders()
+                    await seedOrders().then(async () => {
+                        await createUserAccount();
+                    })
                 })
             });
             resolve();
